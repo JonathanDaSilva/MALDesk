@@ -1,0 +1,14 @@
+{
+  "name": "MAL",
+  "version": "0.0.0",
+  "description": "A MAL desktop program",
+  "main": "index.html",
+  "window": {
+    "width": 1035,
+    "height": 720
+  },
+  "keywords": [
+    "mal"
+  ],
+  "author": "Jonathan Da Silva"
+}

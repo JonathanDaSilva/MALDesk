@@ -1,0 +1,13 @@
+node_modules
+dist
+.tmp
+.sass-cache
+**/.sass-cache
+**/bower_components
+
+dist
+build/cache
+app/index.html
+app/scripts/
+app/styles/
+app/view/*.html
