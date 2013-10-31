@@ -7,25 +7,36 @@ module.exports = (grunt) ->
       app: 'app'
       dist: 'dist'
       test: 'test'
+      e2e: 'e2e'
       build: 'build'
     }
     # Watch
     watch: {
+      livereload: {
+        files: [
+          '<%= config.app %>/styles/*.css'
+          '<%= config.app %>/scripts/*.js'
+          '<%= config.app %>/views/*.html'
+          '<%= config.app %>/index.html'
+        ]
+        options:
+          livereload: 35729
+      }
       coffee: {
         files: ['<%= config.app %>/coffee/{,*/}*.coffee']
         tasks: ['coffee:dev']
       }
-      testUnit: {
-        files: ['<%= config.test %>/coffee/unit/{,*/}*.coffee']
+      test: {
+        files: ['<%= config.test %>/coffee/{,*/}*.coffee']
         tasks: ['coffee:test']
       }
-      testE2E: {
-        files: ['<%= config.test %>/coffee/e2e/{,*/}*.coffee']
+      e2e: {
+        files: ['<%= config.e2e %>/coffee/{,*/}*.coffee']
         tasks: ['coffee:e2e']
       }
       compass: {
         files: ['<%= config.app %>/sass/{,*/}*.sass']
-        tasks: ['sass:dev']
+        tasks: ['compass:dev']
       }
       jadeIndex: {
         files: ['<%= config.app %>/index.jade']
@@ -37,6 +48,16 @@ module.exports = (grunt) ->
       }
     }
     # -------------------------- Dev -----------------------------
+    # Server
+    connect: {
+      dev: {
+        options:
+          port: 8000
+          base: 'app'
+          keepAlive: false
+          livereload: 35729
+      }
+    }
     # CoffeeScript
     coffee: {
       options:
@@ -47,24 +68,24 @@ module.exports = (grunt) ->
         files:
           '<%= config.app %>/scripts/main.js': [
             '<%= config.app %>/coffee/main.coffee'
-            '<%= config.app %>/coffee/{.*/}*.coffee'
+            '<%= config.app %>/coffee/**/*.coffee'
             '<%= config.app %>/coffee/controller/*.coffee'
           ]
       }
       test: {
         expand: true
         flatten: true
-        cwd: 'test/coffee/unit'
+        cwd: '<%= config.test %>/coffee/'
         src: ['*.coffee']
-        dest: 'test/spec/'
+        dest: '<%= config.test %>/spec/'
         ext: '.js'
       }
       e2e: {
         expand: true
         flatten: true
-        cwd: 'test/coffee/e2e'
+        cwd: '<%= config.e2e %>/coffee/'
         src: ['*.coffee']
-        dest: 'test/e2e/'
+        dest: '<%= config.e2e %>/spec/'
         ext: '.js'
       }
     }
@@ -161,24 +182,21 @@ module.exports = (grunt) ->
         linux64: true
       dist: ['<%= config.dist %>/**/*']
     }
-  # -------------------------- Test ----------------------------
-    concurrent: {
-      dev: {
-        tasks: ['karma:unit', 'karma:e2e', 'watch']
-        options:
-          logConcurrentOutput: true
-      }
-    }
+    # -------------------------- Test ----------------------------
     karma: {
       unit: {
         configFile: 'karma.conf.js'
       }
-      e2e: {
-        configFile: 'karma-e2e.conf.js'
-      }
     }
   }
 
+  grunt.registerTask('test', [
+    'karma'
+  ])
+  grunt.registerTask('default', [
+    'connect'
+    'watch'
+  ])
   grunt.registerTask('build', [
     'coffee:dev'
     'compass'
@@ -190,8 +208,4 @@ module.exports = (grunt) ->
     'clean:before'
     'nodewebkit'
     'clean:after'
-  ])
-
-  grunt.registerTask('default', [
-    'concurrent:dev'
   ])
