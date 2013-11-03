@@ -11,3 +11,4 @@ app/index.html
 app/scripts/
 app/styles/
 app/view/*.html
+selenium/
