@@ -1,0 +1,40 @@
+doctype
+html(lang="fr")
+  head
+    meta(charset="utf-8")
+    title MAL
+    //- BootStrap 3
+    link(rel="stylesheet", href="./bower_components/bootstrap/dist/css/bootstrap.min.css")
+    link(rel="stylesheet", href="./bower_components/bootstrap/dist/css/bootstrap-theme.min.css")
+    //- AngularJS
+    script(src="./bower_components/angular/angular.min.js")
+    script(src="./bower_components/angular-route/angular-route.min.js")
+    script(src="./bower_components/ngstorage/ngStorage.min.js")
+    //- My files
+    link(rel="stylesheet", href="./styles/style.css")
+    script(src="./scripts/main.js")
+  body(ng-app="App", ng-controller="AppCtrl")
+    #sidebar.col-xs-2
+      h2 Anime
+      ul.nav.nav-pills.nav-stacked
+        li: a(href="#/anime/all", actual) All
+        li: a(href="#/anime/watching", actual) Watching
+        li: a(href="#/anime/completed", actual) Completed
+        li: a(href="#/anime/onhold", actual) On-hold
+        li: a(href="#/anime/dropped", actual) Dropped
+        li: a(href="#/anime/plantowatch", actual) Plan To Watch
+      h2 Manga
+      ul.nav.nav-pills.nav-stacked
+        li: a(href="#/manga/all", actual) All
+        li: a(href="#/manga/reading", actual) Reading
+        li: a(href="#/manga/completed", actual) Completed
+        li: a(href="#/manga/onhold", actual) On-hold
+        li: a(href="#/manga/dropped", actual) Dropped
+        li: a(href="#/manga/plantoread", actual) Plan To Read
+    #container.col-xs-10
+      #toolbar.row
+        form.col-xs-4
+          input.form-control(type="text",placeholder="Search an Anime")
+        form.col-xs-4
+          input.form-control(type="text",placeholder="Search a Manga")
+      #content(ng-view)

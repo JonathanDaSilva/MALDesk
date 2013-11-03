@@ -10,5 +10,7 @@ build/cache
 app/index.html
 app/scripts/
 app/styles/
-app/view/*.html
+app/views/*.html
 selenium/
+test/spec
+e2e/spec
