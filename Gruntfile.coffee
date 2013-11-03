@@ -43,7 +43,7 @@ module.exports = (grunt) ->
         tasks: ['jade:index']
       }
       jade: {
-        files: ['<%= config.app %>/view/{,*/}*.jade']
+        files: ['<%= config.app %>/views/{,*/}*.jade']
         tasks: ['jade:view']
       }
     }
@@ -76,7 +76,7 @@ module.exports = (grunt) ->
         expand: true
         flatten: true
         cwd: '<%= config.test %>/coffee/'
-        src: ['*.coffee']
+        src: ['**/*.coffee']
         dest: '<%= config.test %>/spec/'
         ext: '.js'
       }
@@ -84,7 +84,7 @@ module.exports = (grunt) ->
         expand: true
         flatten: true
         cwd: '<%= config.e2e %>/coffee/'
-        src: ['*.coffee']
+        src: ['**/*.coffee']
         dest: '<%= config.e2e %>/spec/'
         ext: '.js'
       }
@@ -113,7 +113,7 @@ module.exports = (grunt) ->
         dest: '<%= config.app %>/'
       }
       view: {
-        src: ['<%= config.app %>/views/{.*/}*.jade']
+        src: ['<%= config.app %>/views/*.jade']
         dest: '<%= config.app %>/views/'
       }
     }
@@ -185,11 +185,35 @@ module.exports = (grunt) ->
     # -------------------------- Test ----------------------------
     karma: {
       unit: {
-        configFile: 'karma.conf.js'
+        configFile: './test/karma.conf.js'
+      }
+    }
+    shell: {
+      protractor: {
+        options:
+          stdout: true
+        command: 'node ./node_modules/protractor/bin/protractor ./e2e/protractor.conf.js'
+      }
+      updateNpm:{
+        command: 'npm install'
+      }
+      installBower:{
+        command: 'node ./node_modules/bower/bin/bower update'
+      }
+      installSelenium:{
+        command: 'node ./node_modules/protractor/bin/install_selenium_standalone'
       }
     }
   }
 
+  grunt.registerTask('init', [
+    'shell:updateNpm'
+    'shell:installBower'
+    'shell:installSelenium'
+  ])
+  grunt.registerTask('e2e', [
+    'shell:protractor'
+  ])
   grunt.registerTask('test', [
     'karma'
   ])
