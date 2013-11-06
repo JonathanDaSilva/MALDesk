@@ -4,6 +4,9 @@
   "description": "A MAL desktop program",
   "main": "index.html",
   "window": {
+    "fullscreen": false,
+    "frame": false,
+    "toolbar": false,
     "width": 1035,
     "height": 720
   },
