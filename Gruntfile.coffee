@@ -174,6 +174,7 @@ module.exports = (grunt) ->
     # Build the node-webkit application
     nodewebkit: {
       options:
+        version: '0.8.0'
         build_dir: '<%= config.build %>/'
         keep_nw: true
         mac: true
@@ -212,13 +213,13 @@ module.exports = (grunt) ->
     'shell:installSelenium'
   ])
   grunt.registerTask('e2e', [
+    'connect'
     'shell:protractor'
   ])
   grunt.registerTask('test', [
     'karma'
   ])
   grunt.registerTask('default', [
-    'connect'
     'watch'
   ])
   grunt.registerTask('build', [
