@@ -1,3 +1,5 @@
+ptor = require('protractor')
+
 describe "Routes:", ->
 
   beforeEach -> browser.get('/')
@@ -20,5 +22,5 @@ describe "Routes:", ->
     it "should accept only numbers", ->
       browser.get("#/anime/view/i")
       expect(browser.getCurrentUrl()).toContain('/anime/all')
-      browser.get("#/anime/view/i")
+      browser.get("#/manga/view/i")
       expect(browser.getCurrentUrl()).toContain('/anime/all')
