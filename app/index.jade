@@ -13,6 +13,9 @@ html(lang="fr")
     //- My files
     link(rel="stylesheet", href="./styles/style.css")
     script(src="./scripts/main.js")
+    script
+        window.addEventListener('keydown',function(e){if(e.keyIdentifier==='F12'){require('nw.gui').Window.get().showDevTools();}});
+        window.addEventListener('keydown',function(e){if(e.keyIdentifier==='F5'){require('nw.gui').Window.get().reload();}});
   body(ng-app="App", ng-controller="AppCtrl")
     #sidebar.col-xs-2
       h2 Anime
