@@ -1,33 +1,14 @@
 @import "compass"
 
+$ActiveColor: #428bca
+
 body
   background-color: #222222
+  -webkit-user-select: none
 
-// Sidebar
-$SidebarGeneralColor: #e6e6e6
+h1
+  text-transform: capitalize
 
-#sidebar
-  position: fixed
-  top: 0
-  bottom: 0
-  left: 0
-  >h2
-    color: $SidebarGeneralColor
-  a
-    color: darken($SidebarGeneralColor, 5%)
-    &:hover
-      background-color: darken($SidebarGeneralColor, 5%)
-      color: #343434
-  .active a:hover
-    background-color: darken(#428bca, 5%)
-
-#container
-  background-color: #d3d3d3
-  position: fixed
-  top: 0
-  bottom: 0
-  right: 0
-
-#toolbar
-  background-color: #f3f3f3
-  padding: 5px
+@import "sidebar"
+@import "toolbar"
+@import "home"

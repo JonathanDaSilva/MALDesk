@@ -40,4 +40,8 @@ html(lang="fr")
           input.form-control(type="text",placeholder="Search an Anime")
         form.col-xs-4
           input.form-control(type="text",placeholder="Search a Manga")
+        #settings.col-xs-2
+          a.glyphicon.glyphicon-list(ng-click="toList()", ng-class="isList()") &nbsp;
+          a.glyphicon.glyphicon-th(ng-click="toThumbnails()", ng-class="isThumbnails()") &nbsp;
+        .col-xs-2
       #content(ng-view)

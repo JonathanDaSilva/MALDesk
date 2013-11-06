@@ -1,0 +1,16 @@
+$SidebarGeneralColor: #e6e6e6
+
+#sidebar
+  position: fixed
+  top: 0
+  bottom: 0
+  left: 0
+  >h2
+    color: $SidebarGeneralColor
+  a
+    color: darken($SidebarGeneralColor, 5%)
+    &:hover
+      background-color: darken($SidebarGeneralColor, 5%)
+      color: #343434
+  .active a:hover
+    background-color: darken($ActiveColor, 5%)

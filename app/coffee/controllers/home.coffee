@@ -1,0 +1,1 @@
+ng.controller "HomeCtrl", ($scope)->
