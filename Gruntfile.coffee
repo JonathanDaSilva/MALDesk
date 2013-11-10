@@ -6,33 +6,13 @@ module.exports = (grunt) ->
     config: {
       app: 'app'
       dist: 'dist'
-      test: 'test'
-      e2e: 'e2e'
       build: 'build'
     }
     # Watch
     watch: {
-      livereload: {
-        files: [
-          '<%= config.app %>/styles/*.css'
-          '<%= config.app %>/scripts/*.js'
-          '<%= config.app %>/views/*.html'
-          '<%= config.app %>/index.html'
-        ]
-        options:
-          livereload: 35729
-      }
       coffee: {
         files: ['<%= config.app %>/coffee/{,*/}*.coffee']
         tasks: ['coffee:dev']
-      }
-      test: {
-        files: ['<%= config.test %>/coffee/{,*/}*.coffee']
-        tasks: ['coffee:test']
-      }
-      e2e: {
-        files: ['<%= config.e2e %>/coffee/{,*/}*.coffee']
-        tasks: ['coffee:e2e']
       }
       compass: {
         files: ['<%= config.app %>/sass/{,*/}*.sass']
@@ -48,16 +28,6 @@ module.exports = (grunt) ->
       }
     }
     # -------------------------- Dev -----------------------------
-    # Server
-    connect: {
-      dev: {
-        options:
-          port: 8000
-          base: 'app'
-          keepAlive: false
-          livereload: 35729
-      }
-    }
     # CoffeeScript
     coffee: {
       options:
@@ -71,22 +41,6 @@ module.exports = (grunt) ->
             '<%= config.app %>/coffee/**/*.coffee'
             '<%= config.app %>/coffee/controller/*.coffee'
           ]
-      }
-      test: {
-        expand: true
-        flatten: true
-        cwd: '<%= config.test %>/coffee/'
-        src: ['**/*.coffee']
-        dest: '<%= config.test %>/spec/'
-        ext: '.js'
-      }
-      e2e: {
-        expand: true
-        flatten: true
-        cwd: '<%= config.e2e %>/coffee/'
-        src: ['**/*.coffee']
-        dest: '<%= config.e2e %>/spec/'
-        ext: '.js'
       }
     }
     # Compass
@@ -183,42 +137,8 @@ module.exports = (grunt) ->
         linux64: true
       dist: ['<%= config.dist %>/**/*']
     }
-    # -------------------------- Test ----------------------------
-    karma: {
-      unit: {
-        configFile: './test/karma.conf.js'
-      }
-    }
-    shell: {
-      protractor: {
-        options:
-          stdout: true
-        command: 'node ./node_modules/protractor/bin/protractor ./e2e/protractor.conf.js'
-      }
-      updateNpm:{
-        command: 'npm install'
-      }
-      installBower:{
-        command: 'node ./node_modules/bower/bin/bower update'
-      }
-      installSelenium:{
-        command: 'node ./node_modules/protractor/bin/install_selenium_standalone'
-      }
-    }
   }
 
-  grunt.registerTask('init', [
-    'shell:updateNpm'
-    'shell:installBower'
-    'shell:installSelenium'
-  ])
-  grunt.registerTask('e2e', [
-    'connect'
-    'shell:protractor'
-  ])
-  grunt.registerTask('test', [
-    'karma'
-  ])
   grunt.registerTask('default', [
     'watch'
   ])

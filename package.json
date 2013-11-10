@@ -15,18 +15,6 @@
     "load-grunt-tasks": "~0.1.*",
     "grunt-ngmin": "~0.0.*",
     "grunt-jade": "~0.4.*",
-    "protractor": "~0.12.*",
-    "karma-firefox-launcher": "~0.1.*",
-    "karma-script-launcher": "~0.1.*",
-    "karma-chrome-launcher": "~0.1.*",
-    "karma-html2js-preprocessor": "~0.1.*",
-    "karma-requirejs": "~0.1.*",
-    "karma-jasmine": "~0.1.*",
-    "karma-coffee-preprocessor": "~0.1.*",
-    "karma-phantomjs-launcher": "~0.1.*",
-    "karma": "~0.10.*",
-    "grunt-karma": "~0.6.*",
-    "grunt-shell": "~0.5.*",
     "bower": "~1.2.*"
   },
   "engines": {
