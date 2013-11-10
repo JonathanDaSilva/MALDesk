@@ -1,4 +1,4 @@
-ng.controller "AppCtrl", ($rootScope, $location, $scope, $localStorage, $sessionStorage) ->
+ng.controller "AppCtrl", ($rootScope, $location, $scope, $localStorage, $sessionStorage, mal) ->
 
   # Routing
   $rootScope.$on "$locationChangeSuccess", (current, previous) ->
@@ -19,6 +19,38 @@ ng.controller "AppCtrl", ($rootScope, $location, $scope, $localStorage, $session
   # Initialize LocalStorage
   $rootScope.$storage = $localStorage
 
+  # ----------------- Login -----------------
+  # Initialize loggin
+  delete $rootScope.$storage.user
+  $scope.login =
+    username: ''
+    password: ''
+  if $rootScope.$storage.user?
+    $rootScope.userIsNotLogged = false
+  else
+    $rootScope.userIsNotLogged = true
+
+  # Login function
+  $scope.connect = ->
+    login = $scope.login
+    if login.username != '' and login.password != ''
+      $scope.loginError = false
+      $scope.loginWait = true
+      mal.connect(login.username, login.password).then(
+        -> # Sucess
+          $scope.loginWait = false
+          $scope.userIsNotLogged = false
+          $rootScope.$storage.user = login
+        ,(error)-> # Error
+          $scope.loginWait = false
+          $scope.loginError = true
+          $scope.loginErrorMessage = "Your username or your password are not correct!"
+      )
+    else
+      $scope.loginError = true
+      $scope.loginErrorMessage = "Please fill both of the field"
+
+  # ----------------- View -----------------
   # Initialize Default View
   if not $rootScope.$storage.thumbnails?
     $rootScope.$storage.thumbnails = false

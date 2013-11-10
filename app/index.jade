@@ -7,16 +7,19 @@ html(lang="fr")
     link(rel="stylesheet", href="./bower_components/bootstrap/dist/css/bootstrap.min.css")
     link(rel="stylesheet", href="./bower_components/bootstrap/dist/css/bootstrap-theme.min.css")
     //- AngularJS
+    script(src="./bower_components/spin.js/dist/spin.min.js")
     script(src="./bower_components/angular/angular.min.js")
     script(src="./bower_components/angular-route/angular-route.min.js")
+    script(src="./bower_components/angular-spinner/angular-spinner.min.js")
     script(src="./bower_components/ngstorage/ngStorage.min.js")
     //- My files
     link(rel="stylesheet", href="./styles/style.css")
     script(src="./scripts/main.js")
     script
-        window.addEventListener('keydown',function(e){if(e.keyIdentifier==='F12'){require('nw.gui').Window.get().showDevTools();}});
-        window.addEventListener('keydown',function(e){if(e.keyIdentifier==='F5'){require('nw.gui').Window.get().reload();}});
+      window.addEventListener('keydown',function(e){if(e.keyIdentifier==='F12'){require('nw.gui').Window.get().showDevTools();}});
+      window.addEventListener('keydown',function(e){if(e.keyIdentifier==='F5'){require('nw.gui').Window.get().reload();}});
   body(ng-app="App", ng-controller="AppCtrl")
+    #login(ng-show="userIsNotLogged"): include ./views/login.jade
     #sidebar.col-xs-2
       h2 Anime
       ul.nav.nav-pills.nav-stacked

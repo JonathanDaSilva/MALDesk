@@ -5,7 +5,8 @@
     "angular": "1.2.0-rc.2",
     "bootstrap": "~3.0.*",
     "angular-route": "~1.2.*",
-    "ngstorage": "~0.3.0"
+    "ngstorage": "~0.3.0",
+    "angular-spinner": "~0.2.1"
   },
   "resolutions": {
     "angular": "1.2.0-rc.2"

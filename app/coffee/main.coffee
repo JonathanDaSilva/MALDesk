@@ -1,4 +1,4 @@
-ng = angular.module("App", ['ngRoute','ngStorage'])
+ng = angular.module("App", ['ngRoute','ngStorage','angularSpinner'])
 
 
 ng.config ($routeProvider) ->
