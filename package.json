@@ -1,6 +1,7 @@
 {
   "name": "MAL",
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "description": "An application that let you manage your Myanimelist account on your pc",
   "devDependencies": {
     "grunt": "~0.4.*",
     "grunt-contrib-copy": "~0.4.*",
@@ -11,11 +12,9 @@
     "grunt-contrib-clean": "~0.5.*",
     "grunt-contrib-watch": "~0.5.*",
     "grunt-node-webkit-builder": "~0.1.*",
-    "grunt-contrib-connect": "~0.5.*",
     "load-grunt-tasks": "~0.1.*",
     "grunt-ngmin": "~0.0.*",
-    "grunt-jade": "~0.4.*",
-    "bower": "~1.2.*"
+    "grunt-jade": "~0.4.*"
   },
   "engines": {
     "node": ">=0.8.0"
