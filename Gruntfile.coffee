@@ -152,5 +152,6 @@ module.exports = (grunt) ->
     'cssmin'
     'clean:before'
     'nodewebkit'
+    'nodewebkit'
     'clean:after'
   ])
