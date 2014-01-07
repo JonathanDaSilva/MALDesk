@@ -128,7 +128,7 @@ module.exports = (grunt) ->
     # Build the node-webkit application
     nodewebkit: {
       options:
-        version: '0.8.1'
+        version: '0.8.4'
         build_dir: '<%= config.build %>/'
         keep_nw: true
         mac: true
