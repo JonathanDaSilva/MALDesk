@@ -2,6 +2,9 @@
   "name": "MAL",
   "version": "0.0.1",
   "description": "An application that let you manage your Myanimelist account on your pc",
+  "scripts": {
+    "start": "nodewebkit ./app/"
+  },
   "devDependencies": {
     "grunt": "~0.4.*",
     "grunt-contrib-copy": "~0.4.*",
@@ -14,7 +17,8 @@
     "grunt-node-webkit-builder": "~0.1.*",
     "load-grunt-tasks": "~0.1.*",
     "grunt-ngmin": "~0.0.*",
-    "grunt-jade": "~0.4.*"
+    "grunt-jade": "~0.4.*",
+    "nodewebkit": "~0.8.4"
   },
   "engines": {
     "node": ">=0.8.0"
