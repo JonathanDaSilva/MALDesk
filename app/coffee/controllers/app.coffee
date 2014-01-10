@@ -4,10 +4,6 @@ ng.controller "AppCtrl", ($scope, $rootScope, $localStorage, $sessionStorage, ma
   $rootScope.$storage = $localStorage
   $scope.ui={}
   $scope.error=0
-  $rootScope.picker=
-    show: false
-    id:   null
-    value: []
   $scope.login=
     username: ''
     password: ''
@@ -40,15 +36,7 @@ ng.controller "AppCtrl", ($scope, $rootScope, $localStorage, $sessionStorage, ma
     $scope.loginError = true
     $scope.loginErrorMessage = "Impossible to request your anime/manga list"
   )
-  #Picker
-  $rootScope.$on('ShowPicker', (event, id)->
-    $rootScope.picker.show = true
-    $rootScope.picker.id   = id
-  )
-  $rootScope.$on('HidePicker', ->
-    $scope.picker.show = false
-    $scope.picker.id   = null
-  )
+
   #Spinner
   $scope.$on('ShowLoader', ->
     $scope.ui.spinner = true
@@ -112,6 +100,21 @@ ng.controller "AppCtrl", ($scope, $rootScope, $localStorage, $sessionStorage, ma
     )
   )
 
+  #Initialize Picker
+  $rootScope.picker=
+    show: false
+    id:   null
+    value: []
+
+  #Picker
+  $rootScope.$on('ShowPicker', (event, id)->
+    $rootScope.picker.show = true
+    $rootScope.picker.id   = id
+  )
+  $rootScope.$on('HidePicker', ->
+    $scope.picker.show = false
+    $scope.picker.id   = null
+  )
 
   # Show Picker for adding chapters/episodes
   $rootScope.showPicker = (id)->
