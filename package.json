@@ -1,7 +1,7 @@
 {
-  "name": "MAL",
+  "name": "MALDesk",
   "version": "0.1.2",
-  "description": "An application that let you manage your Myanimelist account on your pc",
+  "description": "An application that let you manage your Anime/Manga list account on your PC, MAC and Linux",
   "scripts": {
     "start": "nodewebkit ./app/"
   },
