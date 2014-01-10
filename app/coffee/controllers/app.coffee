@@ -40,6 +40,15 @@ ng.controller "AppCtrl", ($rootScope, $location, $scope, $localStorage, $session
     $scope.loginError = true
     $scope.loginErrorMessage = "Impossible to request your anime/manga list"
   )
+  #Picker
+  $rootScope.$on('ShowPicker', (event, id)->
+    $rootScope.picker.show = true
+    $rootScope.picker.id   = id
+  )
+  $rootScope.$on('HidePicker', ->
+    $scope.picker.show = false
+    $scope.picker.id   = null
+  )
   #Spinner
   $scope.$on('ShowLoader', ->
     $scope.ui.spinner = true
@@ -75,6 +84,8 @@ ng.controller "AppCtrl", ($rootScope, $location, $scope, $localStorage, $session
     if route[3]?
       if route[2] == 'view' and !isNaN(route[3])
         route[3] = parseInt(route[3])
+      else if route[2] == 'search' and route[3]?
+        $rootScope.search = route[3]
       else
         $location.path('/anime/all')
 
@@ -171,3 +182,55 @@ ng.controller "AppCtrl", ($rootScope, $location, $scope, $localStorage, $session
       return lists.length
     else
       return 0
+
+  # Show Picker for adding chapters/episodes
+  $rootScope.showPicker = (id)->
+    $scope.$emit('ShowPicker', id)
+
+  # Increase the counter chapters/episodes by one
+  $rootScope.addOne = (id)->
+    $rootScope.update(id, true)
+
+  $rootScope.update = (id, increment = false)->
+    $rootScope.$emit('HidePicker')
+    items = $rootScope.items
+    type  = $rootScope.type
+    value = $scope.picker.value[type + id]
+    data  = null
+
+    console.log value
+
+    for item, i in items
+      if id == item.id
+        if type == 'anime'
+          if item.watched_episodes != item.episodes and increment
+            items[i].watched_episodes++
+          else if item.episodes == '-' or (item.episodes >= $scope.picker.value[type + id] and $scope.picker.value[type + id] > -1)
+            items[i].watched_episodes = $scope.picker.value[type + id]
+
+          data  = 'episodes='
+          data += items[i].watched_episodes
+
+        else if type == 'manga'
+          if item.chapters_read != item.chapters and increment
+            items[i].chapters_read++
+          else if item.chapters == '-' or (item.chapters >= $scope.picker.value[type + id] and $scope.picker.value[type + id] > -1)
+            items[i].chapters_read = $scope.picker.value[type + id]
+
+          data  = 'chapters='
+          data += items[i].chapters_read
+
+    if data?
+      console.log data
+      mal.update(type, id, data)
+
+
+  # Search
+  $scope.search = (type)->
+    # get the search
+    if type == 'anime'
+      search = $scope.search.anime
+    else if type == 'manga'
+      search = $scope.search.manga
+
+    $location.path("/#{type}/search/#{search}")

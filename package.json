@@ -1,6 +1,6 @@
 {
   "name": "MAL",
-  "version": "0.0.1",
+  "version": "0.1.2",
   "description": "An application that let you manage your Myanimelist account on your pc",
   "scripts": {
     "start": "nodewebkit ./app/"

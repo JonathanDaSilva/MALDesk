@@ -141,3 +141,15 @@ ng.factory 'mal', ($q, $http, $rootScope) ->
       $http.get("http://#{@username}:#{@password}@#{@hostname}#{path}")
     else
       return false
+
+  update: (type, id, data)->
+    if @isConnect()
+      path = "/#{type}list/#{type}/#{id}"
+      defer = $q.defer()
+
+      $http.put("http://#{@username}:#{@password}@#{@hostname}#{path}?#{data}").success (data) ->
+        defer.resolve(data)
+
+      return defer.promise
+    else
+      return false
