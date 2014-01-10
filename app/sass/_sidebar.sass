@@ -1,6 +1,8 @@
 $SidebarGeneralColor: #e6e6e6
 
 #sidebar
+  padding: 0 5px
+  z-index: 99
   position: fixed
   top: 0
   bottom: 0
@@ -8,9 +10,20 @@ $SidebarGeneralColor: #e6e6e6
   >h2
     color: $SidebarGeneralColor
   a
+    padding: 10px 5px
     color: darken($SidebarGeneralColor, 5%)
     &:hover
       background-color: darken($SidebarGeneralColor, 5%)
       color: #343434
   .active a:hover
     background-color: darken($ActiveColor, 5%)
+  ul
+    margin: 0
+  li
+    margin: 0
+
+.badge
+  position: absolute
+  top: 10px
+  right: 2px
+
