@@ -1,12 +1,11 @@
-ng.factory 'mal', ($q, $http, $rootScope) ->
-  http: require('http')
+ng.factory('mal', ($q, $http, $rootScope) ->
   hostname: 'api.atarashiiapp.com'
-  username: ''
-  password: ''
+  username: null
+  password: null
 
   connect: (username, password)->
-    defer = $q.defer()
-
+    http = require('http')
+    defer   = $q.defer()
     options =
       method: 'GET'
       hostname: 'myanimelist.net'
@@ -16,16 +15,14 @@ ng.factory 'mal', ($q, $http, $rootScope) ->
       headers:
         accept: '*/*'
 
-    req = @http.request options, (res)->
+    http.request(options, (res)->
       if res.statusCode == 200
         defer.resolve()
       else
         defer.reject(res.statusCode)
-
-    req.on 'error', ()->
+    ).on('error', ()->
       defer.reject()
-
-    req.end()
+    ).end()
 
     return defer.promise
 
@@ -34,21 +31,19 @@ ng.factory 'mal', ($q, $http, $rootScope) ->
     @password = account.password
 
   isConnect: () ->
-    if @username != undefined and @username? and @password != undefined and @password?
-      return true
-    else
-      return false
+    if @username? and @password? then return true else return false
 
   getAnimeList: ()->
-    return @getList('anime')
+    if @isConnect()
+      return @getList('anime')
 
   getMangaList: ()->
-    return @getList('manga')
+    if @isConnect()
+      return @getList('manga')
 
   getList: (type)->
     defer = $q.defer()
-
-    path = "/#{type}list/#{@username}"
+    path  = "/#{type}list/#{@username}"
 
     $http.get("http://#{@hostname}#{path}")
     .success( (data) ->
@@ -68,7 +63,6 @@ ng.factory 'mal', ($q, $http, $rootScope) ->
           lists[i].chapters='-'
 
       defer.resolve(lists)
-
     ).error( ->
       defer.reject()
     )
@@ -78,8 +72,7 @@ ng.factory 'mal', ($q, $http, $rootScope) ->
   getByID: (type, id)->
     if @isConnect()
       path = "/#{type}/#{id}"
-
-      $http.get("http://#{@username}:#{@password}@#{@hostname}#{path}?mine=1")
+      return $http.get("http://#{@username}:#{@password}@#{@hostname}#{path}?mine=1")
     else
       return false
 
@@ -137,19 +130,20 @@ ng.factory 'mal', ($q, $http, $rootScope) ->
   search: (type, search)->
     if @isConnect()
       path = "/#{type}/search?q=#{search}"
-
       $http.get("http://#{@username}:#{@password}@#{@hostname}#{path}")
     else
       return false
 
   update: (type, id, data)->
     if @isConnect()
-      path = "/#{type}list/#{type}/#{id}"
+      path  = "/#{type}list/#{type}/#{id}"
       defer = $q.defer()
 
-      $http.put("http://#{@username}:#{@password}@#{@hostname}#{path}?#{data}").success (data) ->
+      $http.put("http://#{@username}:#{@password}@#{@hostname}#{path}?#{data}").success( (data) ->
         defer.resolve(data)
+      )
 
       return defer.promise
     else
       return false
+)
