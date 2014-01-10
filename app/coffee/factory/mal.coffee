@@ -32,6 +32,13 @@ ng.factory 'mal', ($q, $http, $rootScope) ->
   setAccount: (account)->
     @username = account.username
     @password = account.password
+
+  isConnect: () ->
+    if @username != undefined and @username? and @password != undefined and @password?
+      return true
+    else
+      return false
+
   getAnimeList: ()->
     return @getList('anime')
 
@@ -65,5 +72,64 @@ ng.factory 'mal', ($q, $http, $rootScope) ->
     ).error( ->
       defer.reject()
     )
+
+    return defer.promise
+
+  getByID: (type, id)->
+    if @isConnect()
+      path = "/#{type}/#{id}"
+
+      $http.get("http://#{@username}:#{@password}@#{@hostname}#{path}?mine=1")
+    else
+      return false
+
+  getByIDFromCache: (type, id) ->
+    defer = $q.defer()
+
+    # Si id est un chiffre
+    if !isNaN(id)
+      id = parseInt(id)
+    else
+      return false
+
+    # Initialize
+    result = null
+    index  = null
+
+    # Get the right list
+    if type == 'anime'
+      items = $rootScope.$storage.animelist
+    else if type == 'manga'
+      items = $rootScope.$storage.mangalist
+
+    # If the anime/manga is in the list
+    if items? and items != undefined
+      for item, i in items
+        if item.id == id
+          result   = item
+          index    = i
+          break
+
+    # If not we have all the informations
+    if result? and result.synopsis?
+      defer.resolve(result)
+    else
+      @getByID(type, id).success (data)->
+        # If the maximum number of episodes is not already set put a dash
+        if data.episodes == null or data.episodes == 0
+          data.episodes = '-'
+        # If the maximum number of chapters is not already set put a dash
+        if data.chapters == null or data.chapters == 0
+          data.chapters = '-'
+        if index? and type == 'anime'
+          # Update the AnimeList with the full data for the next time
+          $rootScope.$storage.animelist[index] = data
+
+        if index? and type == 'manga'
+          # Update the MangaList with the full data for the next time
+          $rootScope.$storage.mangalist[index] = data
+
+        # Send the data
+        defer.resolve(data)
 
     return defer.promise
