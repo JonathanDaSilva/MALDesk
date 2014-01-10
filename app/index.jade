@@ -24,7 +24,7 @@ html(lang="fr")
   body(ng-app="App", ng-controller="AppCtrl")
     #login(ng-if="isNotConnect()"): include ./views/login.jade
     #loading(ng-if="ifLoading()", us-spinner="{color:'#f4f4f4'}")
-    #sidebar.col-xs-2
+    #sidebar.col-xs-2(ng-controller="SidebarCtrl")
       h2 Anime
       ul.nav.nav-pills.nav-stacked
         li: a(href="#/anime/all", actual) All
