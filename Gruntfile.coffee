@@ -147,8 +147,6 @@ module.exports = (grunt) ->
     'compass'
     'jade'
     'copy'
-    'ngmin'
-    'uglify'
     'cssmin'
     'clean:before'
     'nodewebkit'
