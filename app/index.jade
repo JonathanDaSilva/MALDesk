@@ -55,10 +55,10 @@ html(lang="fr")
           span.badge {{ counter('manga', 'plantoread') }}
     #container.col-xs-10
       #toolbar.row
-        form.col-xs-4
-          input.form-control(type="text",placeholder="Search an Anime")
-        form.col-xs-4
-          input.form-control(type="text",placeholder="Search a Manga")
+        form.col-xs-4(ng-submit="search('anime')")
+          input.form-control(type="text",placeholder="Search an Anime",ng-model="search.anime")
+        form.col-xs-4(ng-submit="search('manga')")
+          input.form-control(type="text",placeholder="Search a Manga",ng-model="search.manga")
         #settings.col-xs-4
           a.glyphicon.glyphicon-list(ng-click="toList()", ng-class="{active: isList()}") &nbsp;
           a.glyphicon.glyphicon-th(ng-click="toThumbnails()", ng-class="{active: isThumbnails()}") &nbsp;

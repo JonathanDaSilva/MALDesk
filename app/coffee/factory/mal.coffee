@@ -133,3 +133,11 @@ ng.factory 'mal', ($q, $http, $rootScope) ->
         defer.resolve(data)
 
     return defer.promise
+
+  search: (type, search)->
+    if @isConnect()
+      path = "/#{type}/search?q=#{search}"
+
+      $http.get("http://#{@username}:#{@password}@#{@hostname}#{path}")
+    else
+      return false
