@@ -10,3 +10,4 @@ ng.directive 'actual', ($location,$rootScope) ->
         else
           parent.removeClass('active')
   }
+)
