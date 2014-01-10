@@ -1,5 +1,6 @@
-ng.factory 'mal', ($q) ->
+ng.factory 'mal', ($q, $http, $rootScope) ->
   http: require('http')
+  hostname: 'api.atarashiiapp.com'
   username: ''
   password: ''
 
@@ -31,3 +32,38 @@ ng.factory 'mal', ($q) ->
   setAccount: (account)->
     @username = account.username
     @password = account.password
+  getAnimeList: ()->
+    return @getList('anime')
+
+  getMangaList: ()->
+    return @getList('manga')
+
+  getList: (type)->
+    defer = $q.defer()
+
+    path = "/#{type}list/#{@username}"
+
+    $http.get("http://#{@hostname}#{path}")
+    .success( (data) ->
+      if type == "anime"
+        lists = data.anime
+      else if type == "manga"
+        lists = data.manga
+      else
+        defer.reject()
+
+      for item, i in lists
+        # If the maximum number of chapters is not already set put a dash
+        if type == 'anime' and (item.episodes == null or item.episodes == 0)
+            lists[i].episodes='-'
+        # If the maximum number of chapters is not already set put a dash
+        if type == 'manga' and (item.chapters == null or item.chapters == 0)
+          lists[i].chapters='-'
+
+      defer.resolve(lists)
+
+    ).error( ->
+      defer.reject()
+    )
+
+    return defer.promise

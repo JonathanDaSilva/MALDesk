@@ -103,6 +103,29 @@ ng.controller "AppCtrl", ($rootScope, $location, $scope, $localStorage, $session
     else
       $scope.$emit('FieldEmpty')
 
+  # Get Anime/Manga Lists
+  $scope.$on('GetLists', ->
+    $scope.$emit('ShowLoader')
+    $q.all([
+      mal.getAnimeList()
+      mal.getMangaList()
+    ]).then(
+      (data) -> #Success
+        $scope.$storage.animelist = data[0]
+        $scope.$storage.mangalist = data[1]
+        $scope.$emit('HideLoader')
+        $rootScope.$emit('RefreshView')
+      ,->
+        if $scope.error != 3
+          $scope.error++
+          $scope.$emit('GetLists') #Try Again
+        else
+          delete $scope.$storage.user
+          $scope.$emit('HideLoader')
+          $scope.$emit('ShowLoginForm')
+          $scope.$emit('LoadFail')
+    )
+  )
 
   # Switch Display type
   $scope.toList = ->
