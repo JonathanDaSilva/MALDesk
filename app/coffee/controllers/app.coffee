@@ -50,16 +50,27 @@ ng.controller "AppCtrl", ($rootScope, $location, $scope, $localStorage, $session
   $scope.ifLoading = ->
     return !!$scope.ui.spinner
 
+  # Previous Location
+  if $scope.$storage.location?
+    $location.path($scope.$storage.location)
+
   # LogOut
   $scope.logout = ->
     $scope.$emit('ShowLoginForm')
     delete $scope.$storage.user
     $scope.$storage.animelist = []
     $scope.$storage.mangalist = []
+    $scope.$storage.location = '/anime/all'
     $location.path('/anime/all')
 
   # Routing
-  $rootScope.$on "$locationChangeSuccess", (current, previous) ->
+  $rootScope.$on("$routeChangeStart", (next, current) ->
+    $scope.$emit('ShowLoader')
+  )
+
+  $rootScope.$on("$routeChangeSuccess", (current, previous) ->
+    $scope.$emit('HideLoader')
+    $scope.$storage.location = $location.path()
     route = $location.path().split('/')
     if route[3]?
       if route[2] == 'view' and !isNaN(route[3])
