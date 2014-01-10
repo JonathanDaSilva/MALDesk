@@ -1,0 +1,44 @@
+@import "compass"
+
+$ActiveColor: #428bca
+
+body
+  background-color: #222222
+  -webkit-user-select: none
+
+h1
+  text-transform: capitalize
+
+@import "sidebar"
+@import "toolbar"
+@import "home"
+@import "login"
+
+
+
+/*     Loading*/
+#loading
+  background-color: rgba(0,0,0,0.6)
+  position: fixed
+  z-index: 999999999999999
+  top: 0
+  right: 0
+  left: 0
+  bottom: 0
+  padding: 5px
+  overflow: hidden
+
+#container
+  background-color: #d3d3d3
+  position: fixed
+  top: 0
+  bottom: 0
+  right: 0
+
+#content
+  position: fixed
+  bottom: -18px
+  right: 10px
+  left: 17%
+  top: 50px
+  overflow-x: scroll

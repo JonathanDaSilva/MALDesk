@@ -1,0 +1,67 @@
+doctype
+html(lang="fr")
+  head
+    meta(charset="utf-8")
+    title MAL
+    //- BootStrap 3
+    link(rel="stylesheet", href="./bower_components/bootstrap/dist/css/bootstrap.min.css")
+    link(rel="stylesheet", href="./bower_components/bootstrap/dist/css/bootstrap-theme.min.css")
+    //- Lib
+    script(src="./bower_components/spin.js/spin.js")
+    //- Angular
+    script(src="./bower_components/angular/angular.js")
+    script(src="./bower_components/angular-route/angular-route.js")
+    script(src="./bower_components/angular-animate/angular-animate.js")
+    script(src="./bower_components/angular-spinner/angular-spinner.js")
+    script(src="./bower_components/angular-sanitize/angular-sanitize.js")
+    script(src="./bower_components/ngstorage/ngStorage.js")
+    //- My files
+    link(rel="stylesheet", href="./styles/style.css")
+    script(src="./scripts/main.js")
+    script
+      window.addEventListener('keydown',function(e){if(e.keyIdentifier==='F12'){require('nw.gui').Window.get().showDevTools();}});
+      window.addEventListener('keydown',function(e){if(e.keyIdentifier==='F5'){require('nw.gui').Window.get().reload();}});
+  body(ng-app="App", ng-controller="AppCtrl")
+    #login(ng-if="isNotConnect()"): include ./views/login.jade
+    #loading(ng-if="ifLoading()", us-spinner="{color:'#f4f4f4'}")
+    #sidebar.col-xs-2(ng-controller="SidebarCtrl")
+      h2 Anime
+      ul.nav.nav-pills.nav-stacked
+        li: a(href="#/anime/all", actual) All
+          span.badge {{ counter('anime', 'all') }}
+        li: a(href="#/anime/watching", actual) Watching
+          span.badge {{ counter('anime', 'watching') }}
+        li: a(href="#/anime/completed", actual) Completed
+          span.badge {{ counter('anime', 'completed') }}
+        li: a(href="#/anime/onhold", actual) On-hold
+          span.badge {{ counter('anime', 'onhold') }}
+        li: a(href="#/anime/dropped", actual) Dropped
+          span.badge {{ counter('anime', 'dropped') }}
+        li: a(href="#/anime/plantowatch", actual) Plan To Watch
+          span.badge {{ counter('anime', 'plantowatch') }}
+      h2 Manga
+      ul.nav.nav-pills.nav-stacked
+        li: a(href="#/manga/all", actual) All
+          span.badge {{ counter('manga', 'all') }}
+        li: a(href="#/manga/reading", actual) Reading
+          span.badge {{ counter('manga', 'reading') }}
+        li: a(href="#/manga/completed", actual) Completed
+          span.badge {{ counter('manga', 'completed') }}
+        li: a(href="#/manga/onhold", actual) On-hold
+          span.badge {{ counter('manga', 'onhold') }}
+        li: a(href="#/manga/dropped", actual) Dropped
+          span.badge {{ counter('manga', 'dropped') }}
+        li: a(href="#/manga/plantoread", actual) Plan To Read
+          span.badge {{ counter('manga', 'plantoread') }}
+    #container.col-xs-10
+      #toolbar.row(ng-controller="ToolbarCtrl")
+        form.col-xs-4(ng-submit="search('anime')")
+          input.form-control(type="text",placeholder="Search an Anime",ng-model="search.anime")
+        form.col-xs-4(ng-submit="search('manga')")
+          input.form-control(type="text",placeholder="Search a Manga",ng-model="search.manga")
+        #settings.col-xs-4
+          a.glyphicon.glyphicon-list(ng-click="toList()", ng-class="{active: isList()}") &nbsp;
+          a.glyphicon.glyphicon-th(ng-click="toThumbnails()", ng-class="{active: isThumbnails()}") &nbsp;
+          a.glyphicon.glyphicon-log-out(ng-click="logout()") &nbsp;
+        .col-xs-2
+      #content(ng-view)

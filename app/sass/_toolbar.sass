@@ -1,0 +1,28 @@
+$ToolbarColor: #232323
+
+
+button, a, input
+  -webkit-app-region: no-drag
+
+#toolbar
+  -webkit-app-region: drag
+  background-color: #f3f3f3
+  padding: 5px
+  border-bottom: 1px outset rgba(0,0,0,0.4)
+  +box-shadow(0 1px 6px 2px rgba(0,0,0,0.2))
+
+#settings a
+  color: $ToolbarColor
+  margin: 4px 0px
+  border: none
+  background: none
+  font-size: 22px
+  text-decoration: none
+  cursor: pointer
+  &:hover
+    color: lighten($ActiveColor, 10%)
+  &.active
+    text-decoration: none
+    color: $ActiveColor
+  &.active:hover
+    color: darken($ActiveColor, 15%)

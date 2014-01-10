@@ -1,0 +1,6 @@
+.view
+  h1(ng-bind-html="current.title")
+  .row
+    img.col-xs-3(src="{{current.image_url}}")
+    div.col-xs-9
+      p(ng-bind-html="current.synopsis")

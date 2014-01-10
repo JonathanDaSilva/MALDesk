@@ -6,8 +6,8 @@ dist
 **/bower_components
 
 dist
-build/cache
+build/**
 app/index.html
 app/scripts/
 app/styles/
-app/view/*.html
+app/views/*.html
