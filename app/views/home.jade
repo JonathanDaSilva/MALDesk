@@ -1,1 +1,6 @@
 h1 {{status}} {{type}}
+div(ng-show="$storage.thumbnails")
+  .thumbnail(ng-repeat="item in items |status:status |orderBy:'title'")
+    img(src="{{item.image_url}}")
+    main
+      h4: a(title="{{item.title}}", href="#/{{type}}/view/{{item.id}}", ng-bind-html="item.title")

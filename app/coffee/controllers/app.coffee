@@ -84,6 +84,9 @@ ng.controller "AppCtrl", ($rootScope, $location, $scope, $localStorage, $session
     else
       $location.path('/anime/all')
 
+    # Every time we change route refresh the view
+    $rootScope.$emit('RefreshView')
+  )
 
   # If Already Connect
   if $rootScope.$storage.user?

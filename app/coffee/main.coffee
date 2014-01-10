@@ -1,12 +1,11 @@
-ng = angular.module("App", ['ngRoute','ngStorage','angularSpinner'])
-
+ng = angular.module("App", ['ngRoute','ngStorage','angularSpinner','ngAnimate','ngSanitize'])
 
 ng.config ($routeProvider) ->
   $routeProvider.when('/:type/view/:id', {
     controller: 'ViewCtrl'
     templateUrl: 'views/view.html'
   })
-  $routeProvider.when('/:type/:status',{
+  $routeProvider.when('/:type/:status', {
     controller: 'HomeCtrl'
     templateUrl: 'views/home.html'
   })
