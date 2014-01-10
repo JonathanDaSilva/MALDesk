@@ -54,7 +54,7 @@ html(lang="fr")
         li: a(href="#/manga/plantoread", actual) Plan To Read
           span.badge {{ counter('manga', 'plantoread') }}
     #container.col-xs-10
-      #toolbar.row
+      #toolbar.row(ng-controller="ToolbarCtrl")
         form.col-xs-4(ng-submit="search('anime')")
           input.form-control(type="text",placeholder="Search an Anime",ng-model="search.anime")
         form.col-xs-4(ng-submit="search('manga')")

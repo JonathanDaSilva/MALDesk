@@ -1,4 +1,4 @@
-ng.controller "AppCtrl", ($scope, $rootScope, $location, $localStorage, $sessionStorage, mal, $q) ->
+ng.controller "AppCtrl", ($scope, $rootScope, $localStorage, $sessionStorage, mal, $q) ->
 
   # Initialize
   $rootScope.$storage = $localStorage
@@ -59,16 +59,6 @@ ng.controller "AppCtrl", ($scope, $rootScope, $location, $localStorage, $session
   $scope.ifLoading = ->
     return !!$scope.ui.spinner
 
-  # LogOut
-  $scope.logout = ->
-    $scope.$emit('ShowLoginForm')
-    delete $scope.$storage.user
-    $scope.$storage.animelist = []
-    $scope.$storage.mangalist = []
-    $scope.$storage.location = '/anime/all'
-    $location.path('/anime/all')
-
-
   # If Already Connect
   if $rootScope.$storage.user?
     $scope.$emit('HideLoginForm')
@@ -122,21 +112,6 @@ ng.controller "AppCtrl", ($scope, $rootScope, $location, $localStorage, $session
     )
   )
 
-  # Switch Display type
-  $scope.toList = ->
-    $scope.$storage.thumbnails = false
-  $scope.toThumbnails = ->
-    $scope.$storage.thumbnails = true
-
-  # If the users have never choose
-  if not $rootScope.$storage.thumbnails?
-    $scope.toThumbnails()
-
-  # Check the Display Type
-  $scope.isList = ->
-    return !$scope.$storage.thumbnails
-  $scope.isThumbnails = ->
-    return $scope.$storage.thumbnails
 
   # Show Picker for adding chapters/episodes
   $rootScope.showPicker = (id)->
@@ -180,12 +155,3 @@ ng.controller "AppCtrl", ($scope, $rootScope, $location, $localStorage, $session
       mal.update(type, id, data)
 
 
-  # Search
-  $scope.search = (type)->
-    # get the search
-    if type == 'anime'
-      search = $scope.search.anime
-    else if type == 'manga'
-      search = $scope.search.manga
-
-    $location.path("/#{type}/search/#{search}")
