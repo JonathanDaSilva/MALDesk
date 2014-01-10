@@ -2,10 +2,8 @@ main
   h3 Connect to your account
   form.form-group(ng-submit="connect()")
     label.control-label(for="loginUser") Username:
-    input#loginUser.form-control(type="text", ng-model="login.username")
+    input.form-control(autofocus, type="text", ng-model="login.username")
     label.control-label(for="loginPassword") Password:
-    input#loginPassword.form-control(type="password", ng-model="login.password")
+    input.form-control(type="password", ng-model="login.password")
     input.btn.btn-primary(type="submit", name="login", value="Log In")
-    .alert.alert-danger(ng-show="loginError") {{loginErrorMessage}}
-    .spinner(ng-show="loginWait")
-      div(us-spinner)
+    .alert.alert-danger(ng-if="loginError") {{loginErrorMessage}}

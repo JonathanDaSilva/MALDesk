@@ -1,4 +1,4 @@
-ng.directive 'actual', ($location,$rootScope) ->
+ng.directive('actual', ($location,$rootScope) ->
   return {
     restrict: 'A'
     link: (scope, element, attrs) ->

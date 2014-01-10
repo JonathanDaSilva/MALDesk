@@ -5,6 +5,7 @@ ng.factory 'mal', ($q) ->
 
   connect: (username, password)->
     defer = $q.defer()
+
     options =
       method: 'GET'
       hostname: 'myanimelist.net'
@@ -18,7 +19,7 @@ ng.factory 'mal', ($q) ->
       if res.statusCode == 200
         defer.resolve()
       else
-        defer.reject()
+        defer.reject(res.statusCode)
 
     req.on 'error', ()->
       defer.reject()
@@ -26,3 +27,7 @@ ng.factory 'mal', ($q) ->
     req.end()
 
     return defer.promise
+
+  setAccount: (account)->
+    @username = account.username
+    @password = account.password

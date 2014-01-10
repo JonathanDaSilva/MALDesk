@@ -19,7 +19,8 @@ html(lang="fr")
       window.addEventListener('keydown',function(e){if(e.keyIdentifier==='F12'){require('nw.gui').Window.get().showDevTools();}});
       window.addEventListener('keydown',function(e){if(e.keyIdentifier==='F5'){require('nw.gui').Window.get().reload();}});
   body(ng-app="App", ng-controller="AppCtrl")
-    #login(ng-show="userIsNotLogged"): include ./views/login.jade
+    #login(ng-if="isNotConnect()"): include ./views/login.jade
+    #loading(ng-if="ifLoading()", us-spinner="{color:'#f4f4f4'}")
     #sidebar.col-xs-2
       h2 Anime
       ul.nav.nav-pills.nav-stacked
@@ -55,8 +56,9 @@ html(lang="fr")
           input.form-control(type="text",placeholder="Search an Anime")
         form.col-xs-4
           input.form-control(type="text",placeholder="Search a Manga")
-        #settings.col-xs-2
-          a.glyphicon.glyphicon-list(ng-click="toList()", ng-class="isList()") &nbsp;
-          a.glyphicon.glyphicon-th(ng-click="toThumbnails()", ng-class="isThumbnails()") &nbsp;
+        #settings.col-xs-4
+          a.glyphicon.glyphicon-list(ng-click="toList()", ng-class="{active: isList()}") &nbsp;
+          a.glyphicon.glyphicon-th(ng-click="toThumbnails()", ng-class="{active: isThumbnails()}") &nbsp;
+          a.glyphicon.glyphicon-log-out(ng-click="logout()") &nbsp;
         .col-xs-2
       #content(ng-view)

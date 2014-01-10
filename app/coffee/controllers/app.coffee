@@ -1,4 +1,62 @@
-ng.controller "AppCtrl", ($rootScope, $location, $scope, $localStorage, $sessionStorage, mal) ->
+ng.controller "AppCtrl", ($rootScope, $location, $scope, $localStorage, $sessionStorage, mal, $filter, $q) ->
+
+  # Initialize
+  $rootScope.$storage = $localStorage
+  $scope.ui={}
+  $scope.error=0
+  $rootScope.picker=
+    show: false
+    id:   null
+    value: []
+  $scope.login=
+    username: ''
+    password: ''
+
+  # Event, Function for variable
+  #LoginForm
+  $scope.isNotConnect = ->
+    return !!$scope.ui.login
+  $scope.$on('ShowLoginForm', ->
+    $scope.ui.login = true
+  )
+  $scope.$on('UserLogged', ->
+    $scope.ui.login = false
+  )
+  $scope.$on('CleanLoginForm', ->
+    $scope.login =
+      username: ''
+      password: ''
+  )
+  #LoginError
+  $scope.$on('LoginError', ->
+    $scope.loginError = true
+    $scope.loginErrorMessage = "Your username or your password are not correct!"
+  )
+  $scope.$on('FieldEmpty', ->
+    $scope.loginError = true
+    $scope.loginErrorMessage = "Please fill both of the field"
+  )
+  $scope.$on('LoadFail', ->
+    $scope.loginError = true
+    $scope.loginErrorMessage = "Impossible to request your anime/manga list"
+  )
+  #Spinner
+  $scope.$on('ShowLoader', ->
+    $scope.ui.spinner = true
+  )
+  $scope.$on('HideLoader', ->
+    $scope.ui.spinner = false
+  )
+  $scope.ifLoading = ->
+    return !!$scope.ui.spinner
+
+  # LogOut
+  $scope.logout = ->
+    $scope.$emit('ShowLoginForm')
+    delete $scope.$storage.user
+    $scope.$storage.animelist = []
+    $scope.$storage.mangalist = []
+    $location.path('/anime/all')
 
   # Routing
   $rootScope.$on "$locationChangeSuccess", (current, previous) ->
@@ -16,44 +74,35 @@ ng.controller "AppCtrl", ($rootScope, $location, $scope, $localStorage, $session
       $location.path('/anime/all')
 
 
-  # Initialize LocalStorage
-  $rootScope.$storage = $localStorage
-
-  # ----------------- Login -----------------
-  # Initialize loggin
-  delete $rootScope.$storage.user
-  $scope.login =
-    username: ''
-    password: ''
+  # If Already Connect
   if $rootScope.$storage.user?
-    $rootScope.userIsNotLogged = false
+    $scope.$emit('HideLoginForm')
+    mal.setAccount($rootScope.$storage.user)
   else
-    $rootScope.userIsNotLogged = true
+    $scope.$emit('ShowLoginForm')
 
-  # Login function
+  # Login function trigger on login click
   $scope.connect = ->
-    login = $scope.login
-    if login.username != '' and login.password != ''
-      $scope.loginError = false
-      $scope.loginWait = true
-      mal.connect(login.username, login.password).then(
+    # If the users has fill both field
+    if $scope.login.username != '' and $scope.login.password != ''
+      $scope.$emit('ShowLoader')
+      mal.connect($scope.login.username, $scope.login.password).then(
         -> # Sucess
-          $scope.loginWait = false
-          $scope.userIsNotLogged = false
-          $rootScope.$storage.user = login
-        ,(error)-> # Error
-          $scope.loginWait = false
-          $scope.loginError = true
-          $scope.loginErrorMessage = "Your username or your password are not correct!"
+          # Set the account
+          mal.setAccount($scope.login)
+          $scope.$storage.user = $scope.login
+          $scope.$emit('CleanLoginForm')
+          $scope.$emit('UserLogged')
+          $scope.$emit('HideLoader')
+          # Get Anime/Manga Lists
+          $scope.$emit('GetLists')
+        ,-> # Error
+          $scope.$emit('LoginError')
+          $scope.$emit('HideLoader')
       )
     else
-      $scope.loginError = true
-      $scope.loginErrorMessage = "Please fill both of the field"
+      $scope.$emit('FieldEmpty')
 
-  # ----------------- View -----------------
-  # Initialize Default View
-  if not $rootScope.$storage.thumbnails?
-    $rootScope.$storage.thumbnails = false
 
   # Switch Display type
   $scope.toList = ->
@@ -61,8 +110,27 @@ ng.controller "AppCtrl", ($rootScope, $location, $scope, $localStorage, $session
   $scope.toThumbnails = ->
     $scope.$storage.thumbnails = true
 
+  # If the users have never choose
+  if not $rootScope.$storage.thumbnails?
+    $scope.toThumbnails()
+
   # Check the Display Type
   $scope.isList = ->
-    return { active: !$scope.$storage.thumbnails }
+    return !$scope.$storage.thumbnails
   $scope.isThumbnails = ->
-    return { active: $scope.$storage.thumbnails }
+    return $scope.$storage.thumbnails
+
+  # Counter
+  $scope.counter = (type, status) ->
+    lists = null
+
+    if type == 'anime' and $scope.$storage.animelist?
+      lists = $scope.$storage.animelist
+    else if type == 'manga' and $scope.$storage.mangalist?
+      lists = $scope.$storage.mangalist
+
+    if lists?
+      lists = $filter('status')(lists, status)
+      return lists.length
+    else
+      return 0
