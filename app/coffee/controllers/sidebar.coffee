@@ -80,6 +80,7 @@ ng.controller('SidebarCtrl', ($scope, $rootScope, $location, $filter, mal)->
           error = true
 
       if error
+        donothing = null
         #TODO: ask the user if he is sure to make that
     else if status == 'plantowatch' or status == 'plantoread'
       if found?
