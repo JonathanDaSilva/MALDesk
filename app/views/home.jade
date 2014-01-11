@@ -10,3 +10,28 @@ div(ng-show="$storage.thumbnails")
         button(style="font-weight: bold;", ng-if="picker.id == item.id", ng-click="picker.id=0") X
         picker(ng-if="picker.id == item.id", model="picker.value[type + item.id]", item="item", click-ok="update(item.id)")
         a(style="margin-left:5px", ng-if=" (type == 'anime' && item.watched_status != 'completed' && item.watched_status != 'dropped') || (type == 'manga' && item.read_status != 'completed' && item.read_status != 'dropped')", ng-click="addOne(item.id)") +
+div(ng-hide="$storage.thumbnails")
+  table.table.table-striped
+    thead
+      tr
+        th Type
+        th Name
+        th(ng-if="type == 'anime'") Episodes
+        th(ng-if="type == 'manga'") Chapters
+        th(ng-if="type == 'manga'") Volumes
+        th Score
+    tbody
+      tr(drag="item", ng-repeat="item in items |status:status |orderBy:'title'")
+        th {{item.type}}
+        th(ng-bind-html="item.title")
+        th(ng-if="type == 'anime'")
+          a(ng-if="picker.id != item.id", ng-click="showPicker(item.id)") {{item.watched_episodes}}/{{item.episodes}}
+          picker(ng-if="picker.id == item.id", model="picker.value[type + item.id]", item="item", click-ok="update(item.id)")
+          a(style="margin-left:5px", ng-if="item.watched_status != 'completed' && item.watched_status != 'dropped'", ng-click="addOne(item.id)") +
+        th(ng-if="type == 'manga'")
+          a(ng-if="picker.id != item.id", ng-click="showPicker(item.id)") {{item.chapters_read}}/{{item.chapters}}
+          picker(ng-if="picker.id == item.id", model="picker.value[type + item.id]", item="item", click-ok="update(item.id)")
+          a(style="margin-left:5px", ng-if="item.read_status != 'completed' && item.read_status != 'dropped'", ng-click="addOne(item.id)") +
+        th(ng-if="type == 'manga'") {{item.volumes_read}}/{{item.volumes}}
+          a(style="margin-left:5px", ng-if="item.read_status != 'completed' && item.read_status != 'dropped'") +
+        th {{item.score}}/10
