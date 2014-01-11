@@ -131,8 +131,6 @@ ng.controller "AppCtrl", ($scope, $rootScope, $localStorage, $sessionStorage, ma
     value = $scope.picker.value[type + id]
     data  = null
 
-    console.log value
-
     for item, i in items
       if id == item.id
         if type == 'anime'
@@ -154,7 +152,6 @@ ng.controller "AppCtrl", ($scope, $rootScope, $localStorage, $sessionStorage, ma
           data += items[i].chapters_read
 
     if data?
-      console.log data
       mal.update(type, id, data)
 
 
