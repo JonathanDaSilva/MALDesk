@@ -23,7 +23,7 @@ html(lang="fr")
       window.addEventListener('keydown',function(e){if(e.keyIdentifier==='F12'){require('nw.gui').Window.get().showDevTools();}});
       window.addEventListener('keydown',function(e){if(e.keyIdentifier==='F5'){require('nw.gui').Window.get().reload();}});
   body(ng-app="App", ng-controller="AppCtrl")
-    #login(ng-if="isNotConnect()"): include ./views/login.jade
+    #login(ng-if="isNotConnect()", ng-include="'views/login.html'")
     #loading(ng-if="ifLoading()", us-spinner="{color:'#f4f4f4'}")
     #sidebar.col-xs-2(ng-controller="SidebarCtrl")
       h2 Anime
