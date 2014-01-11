@@ -139,8 +139,8 @@ ng.controller "AppCtrl", ($scope, $rootScope, $localStorage, $sessionStorage, ma
           else if item.episodes == '-' or (item.episodes >= $scope.picker.value[type + id] and $scope.picker.value[type + id] > -1)
             items[i].watched_episodes = $scope.picker.value[type + id]
 
-          data  = 'episodes='
-          data += items[i].watched_episodes
+          data  = "status=#{item[i].watched_status}"
+          data += "&episodes=#{items[i].watched_episodes}"
 
         else if type == 'manga'
           if item.chapters_read != item.chapters and increment
@@ -148,8 +148,9 @@ ng.controller "AppCtrl", ($scope, $rootScope, $localStorage, $sessionStorage, ma
           else if item.chapters == '-' or (item.chapters >= $scope.picker.value[type + id] and $scope.picker.value[type + id] > -1)
             items[i].chapters_read = $scope.picker.value[type + id]
 
-          data  = 'chapters='
-          data += items[i].chapters_read
+          data  = "status=#{item[i].read_status}"
+          data += "&chapters=#{items[i].chapters_read}"
+          data += "&volumes=#{items[i].volumes_read}"
 
     if data?
       mal.update(type, id, data)

@@ -111,16 +111,20 @@ ng.controller('SidebarCtrl', ($scope, $rootScope, $location, $filter, mal)->
       execute = true
 
     if execute
+      data = ''
       if found?
         if type == 'anime'
           $rootScope.$storage.animelist[found].watched_status = status
+          data = "episodes=#{$rootScope.$storage.animelist[found].watched_episodes}"
         else
           $rootScope.$storage.mangalist[found].read_status = status
+          data  = "chapters=#{$rootScope.$storage.animelist[found].chapters_read}"
+          data += "&volumes=#{$rootScope.$storage.animelist[found].volumes_read}"
 
         # Refresh the view
         $rootScope.$emit('RefreshView')
 
+        data += "&status=#{status}"
         # Put data to MAL
-        data = "status=#{status}"
         mal.update(type, id, data)
 )
