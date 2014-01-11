@@ -152,6 +152,7 @@ ng.factory('mal', ($q, $http, $rootScope) ->
       path  = "/#{type}list/#{type}/#{id}"
       defer = $q.defer()
 
+      data = data.replace('onhold', 'on-hold')
       $http.put("http://#{@username}:#{@password}@#{@hostname}#{path}?#{data}").success( (data) ->
         defer.resolve(data)
       )
