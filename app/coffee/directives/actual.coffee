@@ -1,10 +1,10 @@
-ng.directive('actual', ($location,$rootScope) ->
+ng.directive('actual', ($location) ->
   return {
     restrict: 'A'
     link: (scope, element, attrs) ->
       parent = element.parent()
       href = attrs.href.replace(/#/g, '')
-      $rootScope.$on '$locationChangeSuccess', ->
+      scope.$on '$locationChangeSuccess', ->
         if href == $location.path()
           parent.addClass('active')
         else
