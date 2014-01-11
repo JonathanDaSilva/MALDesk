@@ -1,4 +1,4 @@
-ng.controller('SidebarCtrl', ($scope, $rootScope, $location, $filter)->
+ng.controller('SidebarCtrl', ($scope, $rootScope, $location, $filter, mal)->
   # Previous Location
   if $scope.$storage.location?
     $location.path($scope.$storage.location)
@@ -44,4 +44,82 @@ ng.controller('SidebarCtrl', ($scope, $rootScope, $location, $filter)->
       return lists.length
     else
       return 0
+
+  # Drop
+  $scope.dropitem = (id, type, status)->
+    execute = null
+    list    = null
+    found   = null
+
+    # Get the right list
+    if type == 'anime'
+      list = $rootScope.$storage.animelist
+    else
+      list = $rootScope.$storage.mangalist
+
+    # Found the anime/manga
+    for item, i in list
+      if item.id == id
+        found = i
+        break
+
+    if status == 'completed'
+      error = false
+      if found?
+        if type == 'anime'
+          view = list[i].watched_episodes
+          max  = list[i].episodes
+        else
+          view = list[i].read_chapters
+          max  = list[i].chapters
+        if view == max
+          execute = true
+        else
+          error = true
+      else
+          error = true
+
+      if error
+        #TODO: ask the user if he is sure to make that
+    else if status == 'plantowatch' or status == 'plantoread'
+      if found?
+        if type == 'anime'
+          view = list[i].watched_episodes
+        else
+          view = list[i].read_chapters
+        if view == 0
+          execute = true
+        else
+          #TODO: ask the user if he is sure to make that
+      else
+        execute = true
+    else if status == 'watching' or status == 'onhold'
+      if found?
+        if type == 'anime'
+          actualstatus = list[i].watched_status
+        else
+          actualstatus = list[i].read_status
+        if actualstatus != 'completed'
+          execute = true
+        else
+          #TODO: ask the user if he is sure to make that
+      else
+        execute = true
+
+    else
+      execute = true
+
+    if execute
+      if found?
+        if type == 'anime'
+          $rootScope.$storage.animelist[found].watched_status = status
+        else
+          $rootScope.$storage.mangalist[found].read_status = status
+
+        # Refresh the view
+        $rootScope.$emit('RefreshView')
+
+        # Put data to MAL
+        data = "status=#{status}"
+        mal.update(type, id, data)
 )
