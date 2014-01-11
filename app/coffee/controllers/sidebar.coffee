@@ -127,4 +127,7 @@ ng.controller('SidebarCtrl', ($scope, $rootScope, $location, $filter, mal)->
         data += "&status=#{status}"
         # Put data to MAL
         mal.update(type, id, data)
+     else
+      donothing = null
+      #TODO: when not in anime/manga list
 )
