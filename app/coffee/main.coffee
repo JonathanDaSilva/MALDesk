@@ -43,7 +43,6 @@ ng.config ($routeProvider) ->
             # Search if in anime/manga list
             for item in list
               if item.id == data.id
-                console.log item.title
                 datas[i] = item
 
           defer.resolve(datas)
