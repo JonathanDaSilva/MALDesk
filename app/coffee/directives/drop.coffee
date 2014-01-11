@@ -13,40 +13,22 @@ ng.directive('drop', ($routeParams) ->
         e.preventDefault()
         if $routeParams.type == type and e.originalEvent.dataTransfer.getData('text/json') != status
           element.attr('droppable', true)
-          element.css({
-            'border': '2px dashed'
-            'display': 'block'
-            'backgroundColor': '#428bca'
-          })
+          element.addClass('dragover')
         else
           e.originalEvent.dataTransfer.dropEffect = 'none'
-          element.css({
-            'cursor': 'not-allowed'
-          })
 
       )
       element.on('dragleave', (e)->
         e.preventDefault()
         if $routeParams.type == type and e.originalEvent.dataTransfer.getData('text/json') != status
           element.attr('droppable', false)
-          element.css({
-            'border': 'none'
-            'backgroundColor': 'inherit'
-          })
-        else
-          element.css({
-            'cursor': 'auto'
-          })
-
+          element.removeClass('dragover')
       )
       element.on('drop', (e)->
         e.preventDefault()
         # Default style
         element.attr('droppable', false)
-        element.css({
-          'border': 'none'
-          'backgroundColor': 'inherit'
-        })
+        element.removeClass('dragover')
         # Search the anime/manga drop
         id = e.originalEvent.dataTransfer.getData('text/plain')
         id = parseInt(id)
