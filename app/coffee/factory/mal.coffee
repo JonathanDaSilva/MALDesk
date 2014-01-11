@@ -33,6 +33,27 @@ ng.factory('mal', ($q, $http, $rootScope) ->
   isConnect: () ->
     if @username? and @password? then return true else return false
 
+  normalize: (item, type) ->
+    # If the maximum number of episodes, chapters or volumes is not already set put a dash
+    if type == 'anime'
+      if item.episodes == null or item.episodes == 0
+        lists[i].episodes='-'
+    if type == 'manga'
+      if item.chapters == null or item.chapters == 0
+        lists[i].chapters='-'
+      if item.volumes == null or item.volumes == 0
+        lists[i].chapters='-'
+
+    # Normalize the status variable
+    if type == 'anime'
+      item.watched_status = item.watched_status.replace(/[- ]+/, '').replace(/[ ]+/, '')
+    else
+    item.read_status = item.read_status.replace(/[- ]/, '').replace(/[ ]+/, '')
+
+    # Put a dash instead of 0 in score
+    if item.score == null or item.score == 0
+      lists[i].score='-'
+
   getAnimeList: ()->
     if @isConnect()
       return @getList('anime')
@@ -55,19 +76,7 @@ ng.factory('mal', ($q, $http, $rootScope) ->
         defer.reject()
 
       for item, i in lists
-        # If the maximum number of chapters is not already set put a dash
-        if type == 'anime'
-          if item.episodes == null or item.episodes == 0
-            lists[i].episodes='-'
-          # Normalize the status variable
-          item.watched_status = item.watched_status.replace(/[- ]+/, '').replace(/[ ]+/, '')
-
-        # If the maximum number of chapters is not already set put a dash
-        if type == 'manga'
-          if item.chapters == null or item.chapters == 0
-            lists[i].chapters='-'
-          # Normalize the status variable
-          item.read_status = item.read_status.replace(/[- ]/, '').replace(/[ ]+/, '')
+        @normalize(item, type)
 
       defer.resolve(lists)
     ).error( ->
@@ -115,25 +124,15 @@ ng.factory('mal', ($q, $http, $rootScope) ->
       defer.resolve(result)
     else
       @getByID(type, id).success (data)->
-        # If the maximum number of episodes is not already set put a dash
-        if data.episodes == null or data.episodes == 0
-          data.episodes = '-'
-        # If the maximum number of chapters is not already set put a dash
-        if data.chapters == null or data.chapters == 0
-          data.chapters = '-'
-        if index? and type == 'anime'
-          # Update the AnimeList with the full data for the next time
-          $rootScope.$storage.animelist[index] = data
 
-        # Normalize the status variable
-        if item.watched_status != undefined and item.watched_status?
-          item.watched_status = item.watched_status.replace(/[- ]+/, '').replace(/[ ]+/, '')
-        if item.read_status != undefined and item.read_status?
-          item.read_status = item.read_status.replace(/[- ]+/, '').replace(/[ ]+/, '')
+        @normalize(data, type)
 
         if index? and type == 'manga'
           # Update the MangaList with the full data for the next time
           $rootScope.$storage.mangalist[index] = data
+        else if index? and type == 'anime'
+          # Update the AnimeList with the full data for the next time
+          $rootScope.$storage.animelist[index] = data
 
         # Send the data
         defer.resolve(data)
