@@ -4,7 +4,7 @@ div(ng-show="$storage.thumbnails")
     img(src="{{item.image_url}}")
     main
       h4: a(title="{{item.title}}", href="#/{{type}}/view/{{item.id}}", ng-bind-html="item.title")
-      p {{item.type}}
+      type(type="{{item.type}}")
       h6
         a(ng-if="picker.id != item.id", ng-click="showPicker(item.id)") {{item.chapters_read}}{{item.watched_episodes}}/{{item.episodes}}{{item.chapters}}
         button(style="font-weight: bold;", ng-if="picker.id == item.id", ng-click="picker.id=0") X
@@ -22,7 +22,7 @@ div(ng-hide="$storage.thumbnails")
         th Score
     tbody
       tr(drag="item", ng-repeat="item in items |status:status |orderBy:'title'")
-        th {{item.type}}
+        th: type(type="{{item.type}}")
         th(ng-bind-html="item.title")
         th(ng-if="type == 'anime'")
           a(ng-if="picker.id != item.id", ng-click="showPicker(item.id)") {{item.watched_episodes}}/{{item.episodes}}
