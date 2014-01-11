@@ -56,11 +56,18 @@ ng.factory('mal', ($q, $http, $rootScope) ->
 
       for item, i in lists
         # If the maximum number of chapters is not already set put a dash
-        if type == 'anime' and (item.episodes == null or item.episodes == 0)
+        if type == 'anime'
+          if item.episodes == null or item.episodes == 0
             lists[i].episodes='-'
+          # Normalize the status variable
+          item.watched_status = item.watched_status.replace(/[- ]+/, '').replace(/[ ]+/, '')
+
         # If the maximum number of chapters is not already set put a dash
-        if type == 'manga' and (item.chapters == null or item.chapters == 0)
-          lists[i].chapters='-'
+        if type == 'manga'
+          if item.chapters == null or item.chapters == 0
+            lists[i].chapters='-'
+          # Normalize the status variable
+          item.read_status = item.read_status.replace(/[- ]/, '').replace(/[ ]+/, '')
 
       defer.resolve(lists)
     ).error( ->
@@ -117,6 +124,12 @@ ng.factory('mal', ($q, $http, $rootScope) ->
         if index? and type == 'anime'
           # Update the AnimeList with the full data for the next time
           $rootScope.$storage.animelist[index] = data
+
+        # Normalize the status variable
+        if item.watched_status != undefined and item.watched_status?
+          item.watched_status = item.watched_status.replace(/[- ]+/, '').replace(/[ ]+/, '')
+        if item.read_status != undefined and item.read_status?
+          item.read_status = item.read_status.replace(/[- ]+/, '').replace(/[ ]+/, '')
 
         if index? and type == 'manga'
           # Update the MangaList with the full data for the next time
