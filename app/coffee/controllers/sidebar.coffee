@@ -87,7 +87,7 @@ ng.controller('SidebarCtrl', ($scope, $rootScope, $location, $filter, mal)->
         if type == 'anime'
           view = list[i].watched_episodes
         else
-          view = list[i].read_chapters
+          view = list[i].chapters_read
         if view == 0
           execute = true
         else
